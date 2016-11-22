@@ -80,6 +80,67 @@ Player.prototype.handleInput = function(key) {
     this.x += direction[key][0];
     this.y += direction[key][1];
 };
+// This is a udacian class made for displaying the Gems randomly in the game
+var Udacian = function () {
+    var sprites = [
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png'
+    ];
+
+    this.value = Math.floor(Math.random() * 3)
+    this.sprite = sprites[this.value];
+    this.multiplier = 5 * (this.value + 1);
+
+    this.x = 0 + (101 * Math.floor(Math.random() * 5));
+    this.y = 10 + (85.5 * (Math.floor(Math.random() * 3)));
+}
+
+Udacian.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+// At the start of the game we will be selecting the players
+var Selector = function () {
+    this.sprite = 'images/Selector.png';
+
+    this.x = 0;
+    this.y = 300;
+}
+
+Selector.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+Selector.prototype.update = function() {
+    if (this.x <= 0) {
+        this.x = 0;
+    }
+    if (this.x >= 404) {
+        this.x = 404;
+    }
+    if (this.y >= 404) {
+        this.y = 404;
+    };
+}
+
+Selector.prototype.handleInput = function(key) {
+    var direction = {
+        'left': [-101, 0],
+        'up': [0, -85.5],
+        'right': [101, 0],
+        'down': [0, 85.5],
+        'enter': [0,0]
+    };
+
+    this.x += direction[key][0];
+}
+
+// Now instantiate your objects.
+// Place all enemy objects in an array called allEnemies
+// Place the player object in a variable called player
+
+var selector = new Selector();
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
