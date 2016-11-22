@@ -6,7 +6,7 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-// Update the enemy's position, required method for game
+    // Update the enemy's position, required method for game
     this.x = -101;
     this.y = 62 + (85.5 * (Math.floor(Math.random() * 3)));
     this.speed = (Math.random() * 800) + 100;
@@ -24,7 +24,7 @@ Enemy.prototype.update = function(dt) {
         this.speed = (Math.random() * 800) + 100;
     } else {
         this.x += dt * this.speed;
-    };
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -35,7 +35,7 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function (URL, x, y) {
+var Player = function(URL, x, y) {
     this.sprite = URL || '';
 
     this.x = x || 202;
@@ -43,14 +43,14 @@ var Player = function (URL, x, y) {
     this.score = 0;
 };
 
-Player.prototype.update = function () {
+Player.prototype.update = function() {
     //When player reaches the water safely it will reset to the starting point
     //and the score will increase by one
     if (this.y <= 0) {
         this.score += 1;
         this.y = 404;
         udacian = new Udacian();
-    };
+    }
 
     //setting up the area for the player
     if (this.x <= 0) {
@@ -61,10 +61,10 @@ Player.prototype.update = function () {
     }
     if (this.y >= 404) {
         this.y = 404;
-    };
+    }
 };
 
-Player.prototype.render = function () {
+Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -74,42 +74,42 @@ Player.prototype.handleInput = function(key) {
         'up': [0, -85.5],
         'right': [101, 0],
         'down': [0, 85.5],
-        'enter': [0,0]
+        'enter': [0, 0]
     };
 
     this.x += direction[key][0];
     this.y += direction[key][1];
 };
 // This is a udacian class made for displaying the Gems randomly in the game
-var Udacian = function () {
+var Udacian = function() {
     var sprites = [
         'images/Gem Blue.png',
         'images/Gem Green.png',
         'images/Gem Orange.png'
     ];
 
-    this.value = Math.floor(Math.random() * 3)
+    this.value = Math.floor(Math.random() * 3);
     this.sprite = sprites[this.value];
     this.multiplier = 5 * (this.value + 1);
 
     this.x = 0 + (101 * Math.floor(Math.random() * 5));
     this.y = 10 + (85.5 * (Math.floor(Math.random() * 3)));
-}
+};
 
 Udacian.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 // At the start of the game we will be selecting the players
-var Selector = function () {
+var Selector = function() {
     this.sprite = 'images/Selector.png';
 
     this.x = 0;
     this.y = 300;
-}
+};
 
 Selector.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 Selector.prototype.update = function() {
     if (this.x <= 0) {
@@ -120,8 +120,8 @@ Selector.prototype.update = function() {
     }
     if (this.y >= 404) {
         this.y = 404;
-    };
-}
+    }
+};
 
 Selector.prototype.handleInput = function(key) {
     var direction = {
@@ -129,11 +129,11 @@ Selector.prototype.handleInput = function(key) {
         'up': [0, -85.5],
         'right': [101, 0],
         'down': [0, 85.5],
-        'enter': [0,0]
+        'enter': [0, 0]
     };
 
     this.x += direction[key][0];
-}
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies

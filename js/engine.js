@@ -13,7 +13,6 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
-
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -93,14 +92,14 @@ var Engine = (function(global) {
     /*This function defines to state game over when enemy collide with player*/
 
     function checkCollisions() {
-        allEnemies.forEach(function (enemy) {
+        allEnemies.forEach(function(enemy) {
             if ((enemy.y === player.y) && (player.x >= (enemy.x - 50)) && (player.x <= (enemy.x + 80))) {
 
                 state = "gameover";
-            };
+            }
         });
 
-   }
+    }
 
 
     /* This is called by the update function and loops through all of the
@@ -128,12 +127,12 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/water-block.png', // Top row is water
+                'images/stone-block.png', // Row 1 of 3 of stone
+                'images/stone-block.png', // Row 2 of 3 of stone
+                'images/stone-block.png', // Row 3 of 3 of stone
+                'images/grass-block.png', // Row 1 of 2 of grass
+                'images/grass-block.png' // Row 2 of 2 of grass
             ],
             numRows = 6,
             numCols = 5,
@@ -181,7 +180,7 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        if(udacian) {
+        if (udacian) {
             udacian.render();
         }
 
@@ -242,7 +241,7 @@ var Engine = (function(global) {
     }
 
     document.addEventListener('keyup', function(e) {
-        if (state == "start"  && (e.keyCode < 37 || e.keyCode > 40)) {
+        if (state == "start" && (e.keyCode < 37 || e.keyCode > 40)) {
             reset();
             state = "play";
         } else if (state == "gameover") {
