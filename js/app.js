@@ -6,13 +6,13 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-
-
 // Update the enemy's position, required method for game
     this.x = -101;
     this.y = 62 + (85.5 * (Math.floor(Math.random() * 3)));
     this.speed = (Math.random() * 800) + 100;
 };
+
+
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
@@ -42,6 +42,7 @@ var Player = function (URL, x, y) {
     this.y = y || 404;
     this.score = 0;
 };
+
 Player.prototype.update = function () {
     //When player reaches the water safely it will reset to the starting point
     //and the score will increase by one
@@ -79,16 +80,12 @@ Player.prototype.handleInput = function(key) {
     this.x += direction[key][0];
     this.y += direction[key][1];
 };
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
+        13: 'enter',
         37: 'left',
         38: 'up',
         39: 'right',
@@ -96,4 +93,5 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    selector.handleInput(allowedKeys[e.keyCode]);
 });

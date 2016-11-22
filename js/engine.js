@@ -23,11 +23,14 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
+        state = "start",
+        playerSprite = '',
         lastTime;
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
+
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -79,9 +82,26 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
-        updateEntities(dt);
-        // checkCollisions();
+        if (state == "play") {
+            updateEntities(dt);
+            checkCollisions();
+        } else {
+            selector.update();
+        }
+
     }
+    /*This function defines to state game over when enemy collide with player*/
+
+    function checkCollisions() {
+        allEnemies.forEach(function (enemy) {
+            if ((enemy.y === player.y) && (player.x >= (enemy.x - 50)) && (player.x <= (enemy.x + 80))) {
+
+                state = "gameover";
+            };
+        });
+
+   }
+
 
     /* This is called by the update function and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
@@ -136,7 +156,21 @@ var Engine = (function(global) {
             }
         }
 
-        renderEntities();
+        // This Defines the display entities for Score
+        ctx.fillStyle = "white";
+        ctx.font = "30px Aerial";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "top";
+        ctx.fillText("Score: " + player.score, 30, 530);
+
+
+        if (state == "start") {
+            renderPlayerSelect();
+        } else if (state == "gameover") {
+            renderGameOver();
+        } else {
+            renderEntities();
+        }
     }
 
     /* This function is called by the render function and is called on each game
@@ -147,6 +181,10 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+        if(udacian) {
+            udacian.render();
+        }
+
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -154,13 +192,69 @@ var Engine = (function(global) {
         player.render();
     }
 
+    function renderPlayerSelect() {
+        var options = [
+            [0, 'images/char-boy.png'],
+            [101, 'images/char-horn-girl.png'],
+            [202, 'images/char-pink-girl.png'],
+            [303, 'images/char-cat-girl.png'],
+            [404, 'images/char-princess-girl.png']
+        ];
+
+        selector.render();
+
+        for (i = 0; i < options.length; i++) {
+            ctx.drawImage(Resources.get(options[i][1]), options[i][0], 303);
+
+            if (options[i][0] === selector.x) {
+                playerSprite = options[i][1];
+            }
+        }
+
+        ctx.fillStyle = "Blue";
+        ctx.font = "32px Impact";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.fillText("Choose your udacian warrior", 250, 475);
+    }
+
+    function renderGameOver() {
+        ctx.fillStyle = "Blue";
+        ctx.font = "25px Impact";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.fillText("Ops You lost", 250, 250);
+        ctx.fillText('Press "Enter" to play again', 250, 400);
+        ctx.fillText('Press "Space" to select a new character', 250, 450);
+    }
+
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        allEnemies = [];
+        for (i = 0; i < 3; i++) {
+            allEnemies[i] = new Enemy();
+        }
+        udacian = new Udacian();
+        player = new Player(playerSprite);
     }
+
+    document.addEventListener('keyup', function(e) {
+        if (state == "start"  && (e.keyCode < 37 || e.keyCode > 40)) {
+            reset();
+            state = "play";
+        } else if (state == "gameover") {
+            if (e.keyCode == 13) {
+                reset();
+                state = "play";
+            }
+            if (e.keyCode == 32) {
+                state = "start";
+            }
+        }
+    });
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
@@ -171,7 +265,15 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png',
+        'images/Selector.png'
     ]);
     Resources.onReady(init);
 
@@ -180,4 +282,5 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+
 })(this);
